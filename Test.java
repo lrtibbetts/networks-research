@@ -1,8 +1,11 @@
 import java.util.*;
 
-// TODO: thread to generate events, thread to take care of events
-// start with producer thread, use some random function, randomly generate events (mark the time)
-// track how long the events wait
+// TODO: thread to take care of events
+// track how long the events wait before they are removed
+// make a consumer thread: needs to know which edge to remove events from
+
+// https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs
+// https://algs4.cs.princeton.edu/41graph/
 
 public class Test {
     public static void main(String[] args) {
@@ -18,12 +21,14 @@ public class Test {
             while(end == start)
                 end = rand.nextInt(numVertices); // ensure that start and end are different vertices
             Edge newEdge = new Edge(start, end);
-            // newEdge.printEdge();
+            newEdge.printEdge();
             g.addEdge(newEdge);
         }
 
-        // create producer thread
+        // create producer and consumer threads
         producerThread pthread = new producerThread();
-        pthread.run(g);
+        consumerThread cthread = new consumerThread();
+        cthread.start(g);
+        pthread.start(g);
     }
 }
