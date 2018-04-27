@@ -2,9 +2,13 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 public class producerThread extends Thread {
+    public void start(Graph g) {
+        run(g);
+    }
+
     public void run(Graph g) {
         Random rand = new Random();
-        for(int j = 0; j < 50; j++) {
+        while(true) {
             // randomly select edge
             int index = rand.nextInt(g.getNumEdges());
             Edge edge = g.getEdge(index);

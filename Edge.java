@@ -29,6 +29,10 @@ public class Edge {
         weight++; // increase weight by one for each new event
     }
 
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
+
     public int getVertex1() {
         return vertex1;
     }
