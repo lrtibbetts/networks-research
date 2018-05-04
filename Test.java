@@ -1,11 +1,7 @@
 import java.util.*;
 
-// TODO: thread to take care of events
-// track how long the events wait before they are removed
-// make a consumer thread: needs to know which edge to remove events from
-
-// https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs
-// https://algs4.cs.princeton.edu/41graph/
+// TODO: run the threads concurrently
+// TODO: track how long the events wait before they are removed
 
 public class Test {
     public static void main(String[] args) {
@@ -14,8 +10,8 @@ public class Test {
 
         Random rand = new Random();
 
-        // add 25 random edges to graph
-        for(int i = 0; i < 25; i++) {
+        // add 50 random edges to graph
+        for(int i = 0; i < 50; i++) {
             int start = rand.nextInt(numVertices);
             int end = rand.nextInt(numVertices);
             while(end == start)
@@ -26,9 +22,25 @@ public class Test {
         }
 
         // create producer and consumer threads
-        producerThread pthread = new producerThread();
-        consumerThread cthread = new consumerThread();
-        cthread.start(g);
-        pthread.start(g);
+        producerThread pthread = new producerThread(g);
+        consumerThread cthread = new consumerThread(g);
+
+        // start the producer thread first
+        pthread.start();
+        try {
+            pthread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pthread.stopRunning();
+
+        // start the consumer thread
+        cthread.start();
+        try {
+            cthread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        cthread.stopRunning();
     }
 }

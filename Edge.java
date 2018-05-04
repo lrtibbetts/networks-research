@@ -20,6 +20,10 @@ public class Edge {
         return id;
     }
 
+    public void setId(String newId) {
+        id = newId;
+    }
+
     public void printEdge() {
         System.out.println("Edge from vertex " + vertex1 + " to " + vertex2);
     }

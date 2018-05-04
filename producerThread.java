@@ -2,13 +2,24 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 public class producerThread extends Thread {
-    public void start(Graph g) {
-        run(g);
+
+    private volatile boolean flag = true;
+    private Graph g;
+    private int count; // number of events generated
+
+    public producerThread(Graph myGraph) {
+        count = 0;
+        g = myGraph;
     }
 
-    public void run(Graph g) {
+    public void stopRunning() {
+        flag = false;
+        System.out.println(count + " events were generated.");
+    }
+
+    public void run() {
         Random rand = new Random();
-        while(true) {
+        while(flag) {
             // randomly select edge
             int index = rand.nextInt(g.getNumEdges());
             Edge edge = g.getEdge(index);
@@ -21,6 +32,7 @@ public class producerThread extends Thread {
             edge.addEvent(newEvent);
             System.out.println("New event added to edge " + edge.getId() + " with priority " + priority +
                     " at time " + currentTime);
+            count++;
         }
     }
 }
